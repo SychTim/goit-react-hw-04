@@ -1,0 +1,15 @@
+#root {
+  width: 1440px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+* {
+  box-sizing: border-box;
+}
+
+.modal-close-btn {
+  display: none;
+}

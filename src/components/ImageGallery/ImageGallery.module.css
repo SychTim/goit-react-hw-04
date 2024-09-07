@@ -1,0 +1,12 @@
+.list {
+    width: 1440px;
+    margin: -5px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.card:hover {
+    cursor: pointer;
+}
