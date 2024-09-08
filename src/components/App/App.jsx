@@ -5,8 +5,8 @@ import SearchBar from "../SearchBar/SearchBar";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-import Modal from "react-modal";
 import "./App.css";
+import ImageModal from "../ImageModal/ImageModal";
 
 function App() {
   const [collection, setCollection] = useState([]);
@@ -16,27 +16,22 @@ function App() {
   const [topic, setTopic] = useState("");
   const [loadMore, setLoadMore] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [currentImg, setCurrentImg] = useState({ urls: {regular: ""}});
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
-  };
-  Modal.setAppElement(document.getElementById("root"));
+  const [currentImg, setCurrentImg] = useState({ urls: { regular: "" } });
 
-  function openModal() {
+  function handleForm(serchText) {
+    setCollection([]);
+    setPage(1);
+    setTopic(serchText);
+  }
+
+  function handleClickLoadMore() {
+    setPage((currentPage) => currentPage + 1);
+  }
+
+  function handleClickCard(card) {
+    setCurrentImg(card);
     setIsOpen(true);
   }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-  }
-
   function closeModal() {
     setIsOpen(false);
   }
@@ -74,16 +69,11 @@ function App() {
 
   return (
     <div id="yourAppElement">
-      <SearchBar
-        onSubmit={setTopic}
-        pageDefault={setPage}
-        preventColection={setCollection}
-      />
+      <SearchBar onSubmit={handleForm} />
       {collection.length > 0 && (
         <ImageGallery
           collection={collection}
-          modalState={openModal}
-          setCurrentImg={setCurrentImg}
+          handleClickCard={handleClickCard}
         />
       )}
       {louding && (
@@ -99,20 +89,12 @@ function App() {
         />
       )}
       {error && <ErrorMessage />}
-      {loadMore && <LoadMoreBtn forClick={setPage} />}
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <button onClick={closeModal} className="modal-close-btn">close</button>
-        <img
-          src={currentImg.urls.regular}
-          alt={currentImg.alt_description}
-        />
-      </Modal>
+      {loadMore && <LoadMoreBtn forClick={handleClickLoadMore} />}
+      <ImageModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        currentImg={currentImg}
+      />
     </div>
   );
 }

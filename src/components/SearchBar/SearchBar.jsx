@@ -1,18 +1,20 @@
 import { CiSearch } from "react-icons/ci";
+import toast, { Toaster } from "react-hot-toast";
 import css from "./SearchBar.module.css";
 
-export default function SearchBar({ onSubmit, pageDefault, preventColection }) {
+export default function SearchBar({ onSubmit }) {
+  const notify = () => toast.error("Search request can not be empty!");
+
   function handleSubmit(evt) {
     evt.preventDefault();
-    preventColection([]);
 
     const serchText = evt.target.elements.textField.value;
 
     if (serchText === "") {
+      notify()
       return;
     }
 
-    pageDefault(1);
     onSubmit(serchText);
   }
 
@@ -29,6 +31,14 @@ export default function SearchBar({ onSubmit, pageDefault, preventColection }) {
           autoFocus
           name="textField"
           placeholder="Search images and photos"
+        />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            // Define default options
+            className: "",
+            duration: 5000,
+          }}
         />
       </form>
     </header>

@@ -1,11 +1,7 @@
 import ImageCard from "../ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 
-export default function ImageGallery({
-  collection,
-  modalState,
-  setCurrentImg,
-}) {
+export default function ImageGallery({ collection, handleClickCard }) {
   return (
     <ul className={css.list}>
       {collection.map((card) => {
@@ -14,8 +10,7 @@ export default function ImageGallery({
             key={card.id}
             className={css.card}
             onClick={() => {
-              modalState(true);
-              setCurrentImg(card);
+              handleClickCard(card);
             }}
           >
             <ImageCard card={card} />
